@@ -2,6 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
+import * as rudderanalytics from "rudder-js";
 
 const firebaseConfig = {
 	apiKey: process.env.FIREBASE_API_KEY,
@@ -39,7 +40,12 @@ class Firebase {
 
 	passwordReset = email => this.auth.sendPasswordResetEmail(email);
 
-	addUser = (id, user) => this.db.collection('users').doc(id).set(user);
+	addUser = (id, user) => {
+		rudderanalytics.ready(() => {console.log("we are all set!!!")});
+		rudderanalytics.load("1gJRMjpQB8JztW6FHFVC3IABgn5", "https://hosted.rudderlabs.com",{configUrl:"https://api.rudderlabs.com/sourceConfig"},{logLevel: "DEBUG", integrations:{All:true}})
+		rudderanalytics.identify(user.email,{name: user.fullname, email: user.email});
+		this.db.collection('users').doc(id).set(user);
+	};
 
 	getUser = id => this.db.collection('users').doc(id).get();
 

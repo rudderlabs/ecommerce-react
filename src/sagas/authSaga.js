@@ -2,6 +2,7 @@ import { call, put } from 'redux-saga/effects';
 
 import firebase from 'firebase/firebase';
 import { history } from 'routers/AppRouter';
+import * as rudderanalytics from "rudder-js"
 
 import {
 	SIGNIN,
@@ -68,6 +69,10 @@ function* authSaga({ type, payload }) {
 			try {
 				yield initRequest();
 				yield call(firebase.signIn, payload.email, payload.password);
+				rudderanalytics.ready(() => {console.log("we are all set!!!")});
+		                rudderanalytics.load("1gJRMjpQB8JztW6FHFVC3IABgn5", "https://hosted.rudderlabs.com",{configUrl:"https://api.rudderlabs.com/sourceConfig"},{logLevel: "DEBUG", integrations:{All:true}})
+                		rudderanalytics.identify(payload.email,{email: payload.email});
+
 			} catch (e) {
 				yield handleError(e);
 			}

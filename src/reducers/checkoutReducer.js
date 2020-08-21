@@ -15,11 +15,13 @@ const defaultState = {
 export default (state = defaultState, action) => {
 	switch (action.type) {
 		case SET_CHECKOUT_SHIPPING_DETAILS:
+			console.log(action.payload);
 			return {
 				...state,
 				shipping: action.payload
 			};
 		case SET_CHECKOUT_PAYMENT_DETAILS:
+			console.log(action.payload);
 			return {
 				...state,
 				payment: action.payload

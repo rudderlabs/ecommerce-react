@@ -13,6 +13,7 @@ module.exports = merge(baseConfig, {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
+	host: '0.0.0.0',
     contentBase: false,
     publicPath: '/',
     historyApiFallback: true,

@@ -10,6 +10,7 @@ import StepTracker from '../components/StepTracker';
 import Pagination from '../components/Pagination';
 import ShippingForm from './ShippingForm';
 import ShippingTotal from './ShippingTotal';
+import * as rudderanalytics from "rudder-js"
 
 
 const ShippingDetails = ({
@@ -18,6 +19,7 @@ const ShippingDetails = ({
 	subtotal,
 	history
 }) => {
+
 	useDocumentTitle('Check Out Step 2 | Salinaka');
 	const [field, setField] = useState({
 		fullname: { value: profile.fullname ? profile.fullname : '' },
@@ -58,6 +60,9 @@ const ShippingDetails = ({
 
 	const onClickNext = () => {
 		if (noError) {
+			rudderanalytics.ready(() => {console.log("we are all set!!!")});
+        		rudderanalytics.load("1gJRMjpQB8JztW6FHFVC3IABgn5", "https://hosted.rudderlabs.com",{configUrl:"https://api.rudderlabs.com/sourceConfig"},{logLevel: "DEBUG", integrations:{All:true}})
+        		rudderanalytics.track("Checkout Step 2", {"profile":profile},{userId:profile.email});
 			saveShippingDetails();
 			history.push(CHECKOUT_STEP_3);
 		}

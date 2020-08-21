@@ -6,10 +6,16 @@ import { useSelector } from 'react-redux';
 import { displayDate } from 'helpers/utils';
 import { ACCOUNT_EDIT } from 'constants/routes';
 import ImageLoader from 'components/ui/ImageLoader';
+import * as rudderanalytics from "rudder-js"
+
 
 const UserProfile = (props) => {
 	const profile = useSelector(state => state.profile);
+	rudderanalytics.ready(() => {console.log("we are all set!!!")});
+        rudderanalytics.load("1gJRMjpQB8JztW6FHFVC3IABgn5", "https://hosted.rudderlabs.com",{configUrl:"https://api.rudderlabs.com/sourceConfig"},{logLevel: "DEBUG", integrations:{All:true}})
+                rudderanalytics.track("View Account", {"account": {profile}},{anonymousId: profile.email} );
 
+	console.log(profile);
 	return (
 		<div className="user-profile">
 			<div className="user-profile-block">
